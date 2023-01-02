@@ -10,6 +10,8 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useDispatch } from "react-redux";
+import { signIn } from "../reducers/AuthSlice";
 
 const schema = yup
   .object({
@@ -30,7 +32,8 @@ export default function SignInScreen({ navigation }) {
     },
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data) => console.log(data);
+  const dispatch = useDispatch();
+  const onSubmit = (data) => dispatch(signIn(data));
 
   return (
     <SafeAreaView style={[styles.container]}>
@@ -65,7 +68,7 @@ export default function SignInScreen({ navigation }) {
       />
       <Text>{errors.password?.message}</Text>
 
-      <Button title="Sign In" onPress={() => {handleSubmit(onSubmit)}} />
+      <Button title="Sign In" onPress={handleSubmit(onSubmit)} />
       <Button title="Sign Up" onPress={() => {navigation.navigate("SignUp")}} />
       <Button title="Forgot Password" onPress={() => {navigation.navigate("Forgot")}} />
     </SafeAreaView>
