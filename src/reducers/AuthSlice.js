@@ -11,17 +11,12 @@ const authSlice = createSlice({
   },
   reducers: {
     restoreToken: (state, action) => {
-      state.userToken = action.token;
+      state.userToken = action.payload.token;
       state.isLoading = false;
     },
     signIn: (state, action) => {
-      const payload = action.payload;
-      signInWithEmailAndPassword(auth, payload.email, payload.password)
-        .then((userCredential) => {
-          state.isSignout = false;
-          state.userToken = "a";
-        })
-        .catch((error) => {});
+      state.isSignout = false;
+      state.userToken = action.payload.token;
     },
     signOut: (state) => {
       state.isSignout = true;

@@ -1,10 +1,14 @@
-import { Text, StyleSheet } from "react-native";
+import { Text, StyleSheet, Button } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useDispatch } from "react-redux";
+import { signOut } from "../reducers/AuthSlice";
 
 export default function SettingsScreen() {
+  const dispatch = useDispatch();
+
   return (
     <SafeAreaView style={[styles.container]}>
-      <Text>Permission</Text>
+      <Button title="Log Out" onPress={() => {dispatch(signOut())}} />
     </SafeAreaView>
   );
 }

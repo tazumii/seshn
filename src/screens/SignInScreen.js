@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {
   Text,
   StyleSheet,
@@ -11,7 +12,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
-import { signIn } from "../reducers/AuthSlice";
+import { restoreToken, signIn } from "../reducers/AuthSlice";
 
 const schema = yup
   .object({
@@ -33,7 +34,24 @@ export default function SignInScreen({ navigation }) {
     resolver: yupResolver(schema),
   });
   const dispatch = useDispatch();
-  const onSubmit = (data) => dispatch(signIn(data));
+  const onSubmit = (data) => dispatch(signIn("a"));
+
+  React.useEffect(() => {
+    const bootstrapAsync = async () => {
+      let userToken;
+
+      try {
+        userToken = await SecureStore.getItemAsync('userToken');
+      } catch (e) {
+        // Restoring token failed
+      }
+
+      // After restoring token, we may need to validate it in production apps
+      dispatch(restoreToken("a"));
+    };
+
+    bootstrapAsync();
+  }, []);
 
   return (
     <SafeAreaView style={[styles.container]}>
